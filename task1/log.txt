@@ -1,0 +1,11 @@
+commit 8900c10b0f72dfbcf1da066431cdf826c9fa4193
+Author: Aliaksei SHutau <ashutau@exadel.com>
+Date:   Wed Jun 9 15:07:50 2021 +0300
+
+    add status.txt
+
+commit 0bba7fa1fd59bf058e3b70c5530ed5495d83ce47
+Author: Aliaksei SHutau <ashutau@exadel.com>
+Date:   Wed Jun 9 15:05:52 2021 +0300
+
+    add .gitignore
