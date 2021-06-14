@@ -9,7 +9,7 @@
 
 ## Task 2. AWS/Clouds
 
-1. [WebServer Link](http://ec2-18-185-46-23.eu-central-1.compute.amazonaws.com/ "AWS Intership Example page")
+1. [WebServer Link](http://ec2-3-120-189-89.eu-central-1.compute.amazonaws.com/ "AWS Intership Example page")
 2. The environment is deployed with terraform (./task2/aws)
     * BASH script for installing a web server in this folder as well (./task2/aws/client_data.sh)
     * Primary and secondary VPCs are connected using VPC peering
