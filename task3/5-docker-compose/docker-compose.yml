@@ -1,0 +1,43 @@
+version: '3.5'
+
+services:
+  web-app:
+    build: ./web-app
+    ports:
+        - ${WEB_APP_PORTS}
+    deploy:
+        replicas: ${WEB_APP_COUNT}
+    depends_on:
+        - postgresql
+
+  postgresql:
+    container_name: postgres_13.1
+    image: postgres:13.1
+    restart: unless-stopped
+    command: postgres -c 'config_file=/etc/postgresql/postgresql.conf'
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres/conf:/etc/postgresql
+    env_file:
+      - ./postgres/postgres.env
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  java-app:
+    container_name: my-java-app
+    build: ./${JAVA_APP_SRC}
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "5"
+        compress: "true"
+    entrypoint: ["sh", "/java-app/wait-for-postgres.sh", "postgresql", "java", "Main"]
+    depends_on:
+      - postgresql
+
