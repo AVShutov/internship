@@ -3,7 +3,7 @@ FROM centos:7
 RUN yum -y update && \
     yum -y install httpd php
 
-ARG VERSION=0.0.1
+ARG VERSION=0.0.2
 
 ARG DEVOPS
 ENV DEVOPS="ashutau"
