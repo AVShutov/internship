@@ -8,7 +8,7 @@ ARG VERSION=0.0.2
 ARG DEVOPS
 ENV DEVOPS="ashutau"
 
-COPY index.php /var/www/html/index.php
+#COPY index.php /var/www/html/index.php
 
 EXPOSE 80
 
