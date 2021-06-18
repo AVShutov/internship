@@ -30,7 +30,7 @@ docker run -d --name my-apache-app -p 8080:80 -e -v "$PWD"/index.html:/usr/local
     * [./task3/3-Dockerfile](https://github.com/AVShutov/internship/tree/master/task3/3-Dockerfile) or with command&nbsp;
 
     ```bash
-    docker run -d --name my-apache-app -p 8080:80 -e DEVOPS="111" -v "$PWD"/index.html:/usr/local/apache2/htdocs/index.html httpd:2.4
+    docker run -d --name my-apache-app -p 8080:80 -e DEVOPS=$(echo $USER) -v "$PWD"/index.html:/usr/local/apache2/htdocs/index.html httpd:2.4
     ```
 
 4. Created GitHub Action to DockerHub for each push.
