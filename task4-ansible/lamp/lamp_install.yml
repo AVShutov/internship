@@ -1,11 +1,12 @@
 ---
 - name: "LAMP Install"
   hosts: all
-  become: yes
+#  become: yes
+#  remote_user: ec2-user
   vars:
     lamp_git_repo: 'https://github.com/sprintcube/docker-compose-lamp.git'
     lamp_repo_dest: /home/ec2-user/docker-compose-lamp
-#    ansible_python_interpreter: /usr/bin/python3
+    ansible_python_interpreter: /usr/bin/python3
 
   tasks:
 
@@ -22,16 +23,17 @@
 
     - name: Create and start services
 #      community.docker.docker_compose:
-      docker_compose:
-        project_src: '{{ lamp_repo_dest }}'
-        files:
-          - "docker-compose.yml"
+#      docker_compose:
+#        project_src: '{{ lamp_repo_dest }}'
+#        files:
+#          - "docker-compose.yml"
 #      become: true
 #      vars:
 #        ansible_python_interpreter: /usr/bin/python3
 #      register: output
 #      command: /usr/bin/docker-compose -f {{ lamp_repo_dest }}/docker-compose.yml up -d
-#      command: "docker-compose --version"
+      command: docker-compose -f {{ lamp_repo_dest }}/docker-compose.yml up -d
+#      shell: "docker-compose --version"
 #      command: "date"
 #    - ansible.builtin.debug:
 #        var: output

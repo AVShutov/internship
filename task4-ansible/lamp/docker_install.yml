@@ -23,7 +23,7 @@
 #        - device-mapper-persistent-data
 #        - lvm2
 #        - amazon-linux-extras
-#        - git
+        - git
 
 #    - name: Add extras repository
 #      shell: yum-config-manager --enable extras
@@ -76,3 +76,11 @@
 
 #    - name: Fix docker-compose
 #      shell: "python3.8 -m pip install --upgrade --force-reinstall --no-cache-dir docker-compose && sudo ln -sf /usr/local/bin/docker-compose /usr/bin/docker-compose"
+
+    - name: Install docker-compose
+      become: yes
+      get_url:
+        url: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Linux-x86_64
+        dest: /usr/local/bin/docker-compose
+        mode: 0755
+      become: yes
