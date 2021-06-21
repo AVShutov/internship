@@ -53,7 +53,7 @@ docker run -d --name my-apache-app -p 8080:80 -e -v "$PWD"/index.html:/usr/local
     ]
 ```
 
-2. The Docker deployment playbook is here (https://github.com/AVShutov/internship/tree/master/task4-ansible/lamp). LAMP cloned during installation from third party free repository (thanks man!). Secrets are encrypted with Ansible-vault and transferred as a template to the executable VM.
+2. The Docker deployment playbook is here (https://github.com/AVShutov/internship/tree/master/task4-ansible/lamp). LAMP cloned during installation from third party free repository (thanks man!). Secrets are encrypted with Ansible-vault and transferred with jinja2 template to the executable VMs.
 
 ```yaml
 $ ansible-vault encrypt ./vault.yml --vault-password-file ~/.ansible/vault.txt
