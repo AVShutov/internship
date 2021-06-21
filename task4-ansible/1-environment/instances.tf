@@ -25,17 +25,3 @@ resource "aws_instance" "docker" {
     Name = "Docker-${count.index}"
   }
 }
-
-/*resource "aws_instance" "docker" {
-  ami           = data.aws_ami.latest_ubuntu.id
-  instance_type = "t2.micro"
-  subnet_id     = aws_subnet.primary_public_1.id
-  security_groups = [aws_security_group.primary.id]
-  key_name      = "frankfurt_key"
-  user_data     = file("install_docker.sh")
-  associate_public_ip_address = true
-
-  tags = {
-    Name = "docker"
-  }
-}*/

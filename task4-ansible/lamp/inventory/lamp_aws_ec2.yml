@@ -6,15 +6,7 @@ regions:
 filters:
   tag:Name:
     - Docker-*
-#    - share-resource
-#    - hotfix
   instance-state-name : running
-#keyed_groups:
-#  - prefix: env
-#    key: tags['env']
-#  - prefix: dev
-#    key: tags['ssm']
-
 keyed_groups:
   - key: tags
     prefix: tag
