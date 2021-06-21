@@ -1,0 +1,37 @@
+---
+- name: "LAMP Install"
+  hosts: all
+  become: yes
+  vars:
+    lamp_git_repo: 'https://github.com/sprintcube/docker-compose-lamp.git'
+    lamp_repo_dest: /home/ec2-user/docker-compose-lamp
+#    ansible_python_interpreter: /usr/bin/python3
+
+  tasks:
+
+    - name: Git checkout
+      ansible.builtin.git:
+        repo: '{{ lamp_git_repo }}'
+        dest: '{{ lamp_repo_dest }}'
+
+    - name: Copy files from foo to bar
+      copy:
+        remote_src: True
+        src: '{{ lamp_repo_dest }}/sample.env'
+        dest: '{{ lamp_repo_dest }}/.env'
+
+    - name: Create and start services
+#      community.docker.docker_compose:
+      docker_compose:
+        project_src: '{{ lamp_repo_dest }}'
+        files:
+          - "docker-compose.yml"
+#      become: true
+#      vars:
+#        ansible_python_interpreter: /usr/bin/python3
+#      register: output
+#      command: /usr/bin/docker-compose -f {{ lamp_repo_dest }}/docker-compose.yml up -d
+#      command: "docker-compose --version"
+#      command: "date"
+#    - ansible.builtin.debug:
+#        var: output
