@@ -4,7 +4,7 @@ resource "aws_instance" "ansible" {
   subnet_id     = aws_subnet.primary_public_1.id
   security_groups = [aws_security_group.primary.id]
   key_name      = "frankfurt_key"
-  user_data     = file("ansible_install.sh")
+#  user_data     = file("ansible_install.sh")
   associate_public_ip_address = true
   
   tags = {

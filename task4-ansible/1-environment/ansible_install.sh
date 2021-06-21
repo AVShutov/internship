@@ -2,10 +2,11 @@
 yum update -y
 yum install -y curl git mc
 
-curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-python3 get-pip.py --user
+#curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+#python3 get-pip.py --user
 
-python3 -m pip install --user ansible paramiko docker-compose boto3 botocore
+#python3 -m pip install --user ansible paramiko docker-compose boto3 botocore
+pip3 install --user ansible paramiko docker-compose boto3 botocore
 
 ansible-galaxy collection install amazon.aws
 ansible-galaxy collection install community.docker
@@ -14,4 +15,4 @@ ansible-galaxy collection install community.docker
 #sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 #sudo chmod +x /usr/local/bin/docker-compose
 
-git clone https://github.com/AVShutov/internship
+git clone https://github.com/AVShutov/internship.git

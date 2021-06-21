@@ -68,11 +68,13 @@ resource "null_resource" "ansible_install" {
 
   provisioner "remote-exec" {
     inline = [
-#      "sudo amazon-linux-extras install ansible2 -y",
-#      "sudo yum install git -y",
-#      "sudo yum install mc -y",
+      "sudo yum update -y",
+      "sudo yum install -y curl git mc",
+      "pip3 install --user ansible paramiko docker-compose boto3 botocore",
+      "ansible-galaxy collection install amazon.aws",
+      "ansible-galaxy collection install community.docker",
+      "git clone https://github.com/AVShutov/internship.git",
       "sudo chmod 400 ~/.ssh/frankfurt_key.pem"
-#      "git clone https://github.com/devops-school/ansible-hello-world-role /tmp/ans_ws",
 #      "ansible-playbook /tmp/ans_ws/site.yaml"
     ]
     connection {
