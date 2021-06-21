@@ -36,3 +36,43 @@ docker run -d --name my-apache-app -p 8080:80 -e -v "$PWD"/index.html:/usr/local
 4. Created GitHub Action to DockerHub for each push.
     * https://hub.docker.com/repository/docker/shutoffalexey/my-httpd
 5. Created docker-compose with env files ([./task3/5-docker-compose](https://github.com/AVShutov/internship/tree/master/task3/5-docker-compose))
+## Task 4. Ansible
+
+1. Infrastructure deployed with terraform (https://github.com/AVShutov/internship/tree/master/task4-ansible/1-environment). Ansible and it's dependensies installed with "remote-exec" provisioner. Repo with playbooks git cloned to the Control plane machine.
+
+```terraform
+  provisioner "remote-exec" {
+    inline = [
+      "sudo yum update -y",
+      "sudo yum install -y curl git mc",
+      "pip3 install --user ansible paramiko docker-compose boto3 botocore",
+      "ansible-galaxy collection install amazon.aws",
+      "ansible-galaxy collection install community.docker",
+      "git clone https://github.com/AVShutov/internship.git",
+      "sudo chmod 400 ~/.ssh/frankfurt_key.pem"
+    ]
+```
+
+2. The Docker deployment playbook is here (https://github.com/AVShutov/internship/tree/master/task4-ansible/lamp). LAMP cloned during installation from third party free repository (thanks man!). Secrets are encrypted with Ansible-vault and transferred as a template to the executable VM.
+
+```yaml
+$ ansible-vault encrypt ./vault.yml --vault-password-file ~/.ansible/vault.txt
+```
+
+```yaml
+$ ansible-playbook -i ~/internship/task4-ansible/lamp/inventory/lamp_aws_ec2.yml lamp_install.yml --vault-password-file "~/.ansible/vault.txt" -vv
+```
+
+3. Used EC2 dynamic inventory source plugin. To install it use: ```ansible-galaxy collection install amazon.aws```.
+
+```ini
+ansible.cfg
+[inventory]
+enable_plugins = aws_ec2
+```
+
+```yaml
+$ ansible-inventory -i ~/internship/task4-ansible/lamp/inventory/lamp_aws_ec2.yml --graph
+
+$ansible-inventory -i ~/internship/task4-ansible/lamp/inventory/lamp_aws_ec2.yml --list
+```
