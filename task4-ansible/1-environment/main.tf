@@ -51,11 +51,26 @@ resource "null_resource" "ansible_install" {
     }
   }
 
+  provisioner "file" {
+    source      = "~/.aws"
+    destination = "~/.aws"
+
+    connection {
+      type        = "ssh"
+      user        = "ec2-user"
+      host = aws_instance.ansible.public_dns
+#      host        = "${self.public_ip}"
+      private_key = "${file("~/.ssh/frankfurt_key.pem")}"
+      timeout     = "20s"
+      agent       = false
+    }
+  }
+
   provisioner "remote-exec" {
     inline = [
-      "sudo amazon-linux-extras install ansible2 -y",
-      "sudo yum install git -y",
-      "sudo yum install mc -y",
+#      "sudo amazon-linux-extras install ansible2 -y",
+#      "sudo yum install git -y",
+#      "sudo yum install mc -y",
       "sudo chmod 400 ~/.ssh/frankfurt_key.pem"
 #      "git clone https://github.com/devops-school/ansible-hello-world-role /tmp/ans_ws",
 #      "ansible-playbook /tmp/ans_ws/site.yaml"
