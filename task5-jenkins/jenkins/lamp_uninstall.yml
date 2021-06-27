@@ -1,0 +1,14 @@
+---
+- name: "LAMP Install"
+  hosts: all
+  vars:
+    lamp_repo_dest: /home/ec2-user/docker-compose-lamp
+
+  tasks:
+
+    - name: Stop and destroy services
+      command: docker-compose -f {{ lamp_repo_dest }}/docker-compose.yml down
+      register: output
+
+    - ansible.builtin.debug:
+        var: output.stderr_lines
