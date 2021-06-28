@@ -19,7 +19,7 @@
         packages:
         - docker
         - git
-        - python3-docker
+        - mc
 
     - name: clean yum metadata cache
       command: yum clean metadata
