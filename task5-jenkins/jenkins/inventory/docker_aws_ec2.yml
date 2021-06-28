@@ -5,6 +5,7 @@ regions:
   - eu-central-1
 filters:
   tag:Name:
+    - Ansible*
     - Docker-*
   instance-state-name : running
 keyed_groups:
