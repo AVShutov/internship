@@ -39,7 +39,7 @@ resource "aws_security_group" "primary" {
   vpc_id = aws_vpc.primary_vpc.id
 
   dynamic "ingress" {
-    for_each = ["443", "80", "22"]
+    for_each = ["443", "80", "22", "8080", "4243", "2375"]
     content {
       from_port   = ingress.value
       to_port     = ingress.value
