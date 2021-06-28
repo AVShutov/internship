@@ -39,7 +39,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./
-          file: ./task3/4-integration/Dockerfile
+          file: ./task3-docker/4-integration/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/my-httpd:latest
 
