@@ -1,0 +1,56 @@
+pipeline {
+    agent {
+        label 'master'
+    }
+    environment {
+        appName = "apache-app"
+        dockerRegistryURL = "ec2-3-68-158-210.eu-central-1.compute.amazonaws.com:5000"
+        dockerHosts = "ec2-3-120-158-167.eu-central-1.compute.amazonaws.com"
+        passwd = credentials('docker-pwd')
+    }
+
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/AVShutov/internship.git'
+            }
+        }
+        stage('Build Docker image') {
+            steps {
+                sh '''
+                    docker build --pull -t ${appName}:JENKINS-${env.BUILD_NUMBER} ./task3-docker/3-Dockerfile
+                    docker tag ${appName}:JENKINS-${env.BUILD_NUMBER} ${dockerRegistryURL}/${appName}:latest
+                    docker tag ${appName}:JENKINS-${env.BUILD_NUMBER} ${dockerRegistryURL}/${appName}:${env.BUILD_NUMBER}
+                '''
+            }
+        }
+        stage('Push Docker image') {
+            steps {
+                sh '''
+                    docker push ${dockerRegistryURL}/${appName}:latest
+                    docker push ${dockerRegistryURL}/${appName}:${env.BUILD_NUMBER}
+                '''
+            }
+        }
+        stage('Remove Docker image locally') {
+            steps {
+                sh '''
+                    docker rmi ${dockerRegistryURL}/${appName}:latest || echo "Not tagged.."
+                    docker rmi ${dockerRegistryURL}/${appName}:${env.BUILD_NUMBER} || echo "Not tagged.."
+                '''
+            }
+        }
+
+        stage('Deploy to Env') {
+            steps { 
+                sh '''
+                    docker -H ${dockerHosts} stop ${appName}-app || echo 'No such container'
+                    docker -H ${dockerHosts} rm ${appName}-app || echo 'No such container'
+                    docker -H ${dockerHosts} pull ${dockerRegistryURL}/${appName}:latest
+                    docker -H ${dockerHosts} run -d --restart='always' -p 8085:80 -e PASSWORD=${passwd} --name ${appName}-app ${dockerRegistryURL}/${appName}:latest
+                '''
+            }
+        }
+    }
+}  
