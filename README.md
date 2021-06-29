@@ -78,3 +78,12 @@ $ansible-inventory -i ~/internship/task4-ansible/lamp/inventory/lamp_aws_ec2.yml
 ```
 
 ## Task 5. Jenkins
+
+1. Jenkins deployed with Ansible playbook (https://github.com/AVShutov/internship/blob/master/task5-jenkins/jenkins/jenkins_install.yml) in Docker using Dockerfile (https://github.com/AVShutov/internship/blob/master/task5-jenkins/jenkins/Dockerfile) for this.
+
+2. Docker Registry deployed with docker-compose (https://github.com/AVShutov/internship/blob/master/task5-jenkins/jenkins/docker-compose.yml)
+
+3. Jenkinsfile (https://github.com/AVShutov/internship/blob/master/task5-jenkins/jenkins/Jenkinsfile)
+    * PASSWORD variable passed into container with standart Jenkiks Credentials module
+
+4. [![Build Status](http://ec2-3-68-158-210.eu-central-1.compute.amazonaws.com:8080/buildStatus/icon?job=Docker)](http://ec2-3-68-158-210.eu-central-1.compute.amazonaws.com:8080/job/Docker/)
