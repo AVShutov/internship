@@ -76,3 +76,5 @@ $ ansible-inventory -i ~/internship/task4-ansible/lamp/inventory/lamp_aws_ec2.ym
 
 $ansible-inventory -i ~/internship/task4-ansible/lamp/inventory/lamp_aws_ec2.yml --list
 ```
+
+## Task 5. Jenkins
