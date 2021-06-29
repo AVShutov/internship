@@ -2,11 +2,7 @@
 - name: "Jenkins Install"
   hosts: all
   vars:
-#    lamp_git_repo: 'https://github.com/sprintcube/docker-compose-lamp.git'
-#    lamp_repo_dest: /home/ec2-user/docker-compose-lamp
     ansible_python_interpreter: /usr/bin/python3
-#  vars_files:
-#    - '{{ playbook_dir }}/vault.yml'
 
   tasks:
 
@@ -15,8 +11,6 @@
         build:
           path: '{{ playbook_dir }}'
         name: jenkins_docker
-#        tag: v1
-#        push: yes
         source: build
 
     - name: Ensure jenkins directory on docker host
@@ -31,14 +25,8 @@
       ansible.builtin.file:
         src: /data/jenkins_home
         dest: /var/jenkins_home
-#        owner: foo
-#        group: foo
         state: link
       become: yes
-
-#- name: Pull the latest official jenkins docker image
-#  docker_image:
-#    name: "jenkins:latest"
 
     - name: Create a container from the jenkins docker image
       docker_container:
@@ -53,28 +41,3 @@
           - /var/run/docker.sock:/var/run/docker.sock
         state: started
         recreate: no
-
-
-#    - name: Git checkout
-#      ansible.builtin.git:
-#        repo: '{{ lamp_git_repo }}'
-#        dest: '{{ lamp_repo_dest }}'
-
-#    - name: Copy files from foo to bar
-#      ansible.builtin.template:
-#        src: '{{ playbook_dir }}/.env.j2'
-#        dest: '{{ lamp_repo_dest }}/.env'
-
-
-#    - name: Create and start services
-##      community.docker.docker_compose:
-##      docker_compose:
-##        project_src: '{{ lamp_repo_dest }}'
-##        files:
-##          - "docker-compose.yml"
-##      register: output
-#      command: docker-compose -f {{ lamp_repo_dest }}/docker-compose.yml up -d
-#      register: output
-
-#    - ansible.builtin.debug:
-#        var: output.stderr_lines
