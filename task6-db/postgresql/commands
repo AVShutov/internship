@@ -1,0 +1,13 @@
+$ ansible-inventory -i ~/internship/task4-ansible/lamp/inventory/lamp_aws_ec2.yml --graph
+
+$ansible-inventory -i ~/internship/task4-ansible/lamp/inventory/lamp_aws_ec2.yml --list
+
+$ ansible-playbook -i ~/internship/task4-ansible/lamp/inventory/lamp_aws_ec2.yml lamp_uninstall.yml --vault-password-file "~/.ansible/vault.txt" -vv
+
+$ ansible-vault encrypt ./vault.yml --vault-password-file ~/.ansible/vault.txt
+
+$ ansible-playbook -i ./inventory/docker_aws_ec2.yml docker_install.yml -vv
+
+$ ansible -i ./inventory/docker_aws_ec2.yml tag_Name_Docker_0 -m ping
+
+$ sudo amazon-linux-extras install postgresql13
