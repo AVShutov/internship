@@ -1,0 +1,27 @@
+---
+- name: Create directories
+  file:
+    path: "/opt/{{ item }}"
+    state: directory
+    recurse: yes
+    mode: 0755
+  with_items:
+    - postgres
+    - postgres/conf
+
+- name: Copy conf files
+  copy:
+    src: "{{ item }}"
+    dest: /opt/postgres/conf
+  with_items:
+    - pg_hba.conf
+    - postgresql.conf
+
+- name: Copy data source files
+  copy:
+    src: "{{ item }}"
+    dest: /opt/postgres
+  with_items:
+    - Result.csv
+    - Students.csv
+    - init-db.sh

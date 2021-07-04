@@ -64,6 +64,7 @@ resource "null_resource" "ansible_install" {
       "pip3 install --user ansible paramiko docker-compose boto3 botocore",
       "ansible-galaxy collection install amazon.aws",
       "ansible-galaxy collection install community.docker",
+      "ansible-galaxy collection install ansible.posix",
       "git clone https://github.com/AVShutov/internship.git",
       "sudo chmod 400 ~/.ssh/frankfurt_key.pem"
 #      "ansible-playbook /tmp/ans_ws/site.yaml"

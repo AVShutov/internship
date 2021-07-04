@@ -24,8 +24,11 @@ psql -v ON_ERROR_STOP=1 --username postgres --dbname postgres <<-EOSQL
                 Task4 varchar (127) not null,
                 Task5 varchar (127) not null,
                 primary key (id));
+
+    CREATE USER replica_user WITH REPLICATION ENCRYPTED PASSWORD "$REPLICA_PASSWORD";
+    SELECT * FROM pg_create_physical_replication_slot('replication_slot_slave1');
 EOSQL
 
 export PGPASSWORD="$POSTGRES_PASSWORD"
-psql -U postgres -c "\copy Students(Student,StudentId) FROM './Students.csv' DELIMITER ',' CSV HEADER;" task6_db
-psql -U postgres task6 -c "\copy Result(StudentId,Task1,Task2,Task3,Task4,Task5) FROM './Result.csv' DELIMITER ',' CSV HEADER;" task6_db
+psql -U postgres -c "\copy Students(Student,StudentId) FROM '/data/Students.csv' DELIMITER ',' CSV HEADER;" task6_db
+psql -U postgres task6 -c "\copy Result(StudentId,Task1,Task2,Task3,Task4,Task5) FROM '/data/Result.csv' DELIMITER ',' CSV HEADER;" task6_db
