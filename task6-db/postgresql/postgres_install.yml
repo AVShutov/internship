@@ -1,0 +1,8 @@
+---
+- name: Install Postgresql
+  hosts: all
+  become: yes
+  vars_files:
+    - ./inventory/production/group_vars/dbservers.yml
+  roles:
+    - master
