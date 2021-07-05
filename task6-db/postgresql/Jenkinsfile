@@ -1,0 +1,25 @@
+pipeline {
+    agent {
+        label 'master'
+    }
+    environment {
+        passwd = credentials('docker-pwd')
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/AVShutov/internship.git'
+            }
+        }
+        stage('Deploy Postgresql Master') {
+            steps {
+                sh "ansible-playbook -i ./inventory/docker_aws_ec2.yml postgres_install_m.yml --vault-password-file '~/.ansible/vault.txt' -vv"
+            }
+        }
+        stage('Deploy Postgresql Slave') {
+            steps {
+                sh "ansible-playbook -i ./inventory/docker_aws_ec2.yml postgres_install_s.yml --vault-password-file "~/.ansible/vault.txt" -vv"
+            }
+        }
+    }
+}
