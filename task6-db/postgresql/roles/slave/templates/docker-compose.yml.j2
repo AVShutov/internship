@@ -1,0 +1,23 @@
+version: '3.5'
+
+services:
+  postgresql:
+    container_name: postgres-13.1-{{ role_name }}
+    image: postgres:13.1
+    restart: unless-stopped
+    command: postgres -c 'config_file=/etc/postgresql/postgresql.conf'
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres-docker/data:/var/lib/postgresql/data
+      - ./conf:/etc/postgresql
+#      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+#      - ./data_source:/data
+    env_file:
+      - ./postgres.env
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+

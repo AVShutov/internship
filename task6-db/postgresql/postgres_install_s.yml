@@ -1,0 +1,8 @@
+---
+- name: Install Postgresql
+  hosts: tag_Name_Docker_1
+  become: yes
+  vars_files:
+    - ./inventory/group_vars/all.yml
+  roles:
+    - slave

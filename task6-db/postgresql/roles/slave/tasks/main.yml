@@ -1,0 +1,56 @@
+---
+- name: Install Postgresql Client
+  command: sudo amazon-linux-extras install postgresql13
+
+- name: Create directories
+  file:
+    path: "/opt/{{ item }}"
+    state: directory
+    recurse: yes
+    mode: 0755
+  with_items:
+    - postgres
+    - postgres/conf
+    - /opt/postgres/postgres-docker/data
+
+- name: Copy conf files
+  copy:
+    src: "{{ item }}"
+    dest: /opt/postgres/conf
+  with_items:
+    - pg_hba.conf
+    - postgresql.conf
+
+- name: Copy templates
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: 0777
+  with_items:
+    - {src: 'docker-compose.yml.j2',dest: '/opt/postgres/docker-compose.yml'}
+    - {src: 'postgres.env.j2',dest: '/opt/postgres/postgres.env'}
+
+#- name: Expoprt replica user
+#  command: export PGPASSWORD="$REPLICA_PASSWORD"
+#  environment:
+#    REPLICA_PASSWORD: '{{ vault_replica_password }}'
+
+- name: Docker compose postgres stop
+  command: /usr/local/bin/docker-compose -f /opt/postgres/docker-compose.yml stop
+
+- name: Clear postgres data
+  file:
+    path: /opt/postgres/postgres-docker/data
+    state: absent
+
+- name: Create data dir
+  file:
+    path: /opt/postgres/postgres-docker/data
+    state: directory
+
+- name: Fetch data to Slave
+  command: pg_basebackup -h 10.0.11.156 -U replica_user -p 5432 -D /opt/postgres/postgres-docker/data  -Fp -Xs -P -R
+
+- name: Docker compose start
+  command: /usr/local/bin/docker-compose -f /opt/postgres/docker-compose.yml up -d
+
