@@ -111,7 +111,7 @@ $ dropdb -h localhost -p 5432 -U postgres -w -f --if-exists task6_db
 
 $ createdb -h localhost -p 5432 -U postgres -w task6_db
 
-$ pg_restore -h localhost -p 5432 -d task6_db -U postgres --role -v /opt/db_backup/task6_db.backup
+$ pg_restore -h localhost -p 5432 -d task6_db -U postgres -v /opt/db_backup/task6_db.backup
 ```
 
 4. Ansible role for creating a SQL cluster (master/slave).<br>
