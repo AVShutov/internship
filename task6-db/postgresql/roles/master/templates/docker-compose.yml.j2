@@ -12,7 +12,7 @@ services:
       - ./postgres-docker/data:/var/lib/postgresql/data
       - ./conf:/etc/postgresql
       - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
-      - ./data:/data
+      - ./data_source:/data
     env_file:
       - ./postgres.env
     logging:

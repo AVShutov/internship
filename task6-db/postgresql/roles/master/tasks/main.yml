@@ -1,4 +1,7 @@
 ---
+- name: Install Postgresql Client
+  command: sudo amazon-linux-extras install postgresql13
+
 - name: Create directories
   file:
     path: "/opt/{{ item }}"
@@ -8,6 +11,7 @@
   with_items:
     - postgres
     - postgres/conf
+    - postgres/data_source
 
 - name: Copy conf files
   copy:
@@ -19,9 +23,26 @@
 
 - name: Copy data source files
   copy:
-    src: "{{ item }}"
-    dest: /opt/postgres
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
   with_items:
-    - Result.csv
-    - Students.csv
-    - init-db.sh
+    - {src: 'Result.csv',dest: '/opt/postgres/data_source/Result.csv'}
+    - {src: 'Students.csv',dest: '/opt/postgres/data_source/Students.csv'}
+    - {src: 'init-db.sh',dest: '/opt/postgres'}
+
+#    - Result.csv
+#    - Students.csv
+#    - init-db.sh
+
+- name: Copy templates
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: 0777
+  with_items:
+    - {src: 'docker-compose.yml.j2',dest: '/opt/postgres/docker-compose.yml'}
+    - {src: 'postgres.env.j2',dest: '/opt/postgres/postgres.env'}
+
+- name: Docker compose start
+  command: /usr/local/bin/docker-compose -f /opt/postgres/docker-compose.yml up -d
+#  remote_user: ec2-user

@@ -20,7 +20,6 @@
         - docker
         - git
         - mc
-        - postgresql13-client
 
     - name: clean yum metadata cache
       command: yum clean metadata

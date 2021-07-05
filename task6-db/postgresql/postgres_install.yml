@@ -1,8 +1,8 @@
 ---
 - name: Install Postgresql
-  hosts: all
+  hosts: tag_Name_Docker_0
   become: yes
   vars_files:
-    - ./inventory/production/group_vars/dbservers.yml
+    - ./inventory/group_vars/all.yml
   roles:
     - master
