@@ -89,3 +89,33 @@ $ansible-inventory -i ~/internship/task4-ansible/lamp/inventory/lamp_aws_ec2.yml
 4. Integration between GitHub and Jenkins is configured using a standard GitHub Webhook and Embeddable Build Status plugin that shows the status of the last build as an icon.
 
 [![Build Status](http://ec2-3-68-158-210.eu-central-1.compute.amazonaws.com:8080/buildStatus/icon?job=Docker)](http://ec2-3-68-158-210.eu-central-1.compute.amazonaws.com:8080/job/Docker/)
+
+## Task 6. Databases
+
+1. SQL script that will fill the Database and check for the presence of existing tables/records is wrapped in a bash script (https://github.com/AVShutov/internship/blob/master/task6-db/postgresql/roles/master/files/init-db.sh) that is launched when the docker container with the Postgres Master starts. This script creates a database, tables, fills it with data from CSV files (https://github.com/AVShutov/internship/tree/master/task6-db/postgresql/roles/master/files), and also creates a user and a slot for replication.
+
+2. A request that will find information about completed tasks
+
+```bash
+$ psql -h localhost -U postgres task6_db -c "SELECT Students.Student, task1, task2, task3, task4, task5 FROM Students,result where Students.StudentId=result.StudentId AND Students.Student ~ 'Шутов'";
+```
+
+3. Dump the database, delete the existing one and restore from the dump. 
+
+```bash
+$ export PGPASSWORD="$POSTGRES_PASSWORD"
+
+$ pg_dump -h localhost -p 5432 -w -U postgres -n public -F t -b -E UTF8 -f /opt/db_backup/task6_db.backup task6_db
+
+$ dropdb -h localhost -p 5432 -U postgres -w -f --if-exists task6_db
+
+$ createdb -h localhost -p 5432 -U postgres -w task6_db
+
+$ pg_restore -h localhost -p 5432 -d task6_db -U postgres --role -v /opt/db_backup/task6_db.backup
+```
+
+4. Ansible role for creating a SQL cluster (master/slave).<br>
+https://github.com/AVShutov/internship/tree/master/task6-db/postgresql
+
+5. Jenkins Pipeline for Ansible roles.<br>
+https://github.com/AVShutov/internship/blob/master/task6-db/postgresql/Jenkinsfile
