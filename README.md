@@ -114,8 +114,22 @@ $ createdb -h localhost -p 5432 -U postgres -w task6_db
 $ pg_restore -h localhost -p 5432 -d task6_db -U postgres -v /opt/db_backup/task6_db.backup
 ```
 
-4. Ansible roles for creating a SQL cluster (master/slave).<br>
+4. Ansible role for creating a SQL cluster (master/slave).<br>
 https://github.com/AVShutov/internship/tree/master/task6-db/postgresql
 
 5. Jenkins Pipeline for Ansible roles.<br>
 https://github.com/AVShutov/internship/blob/master/task6-db/postgresql/Jenkinsfile
+
+## Task 7. Monitoring
+
+1. Zabbix installed with Ansible role (https://github.com/AVShutov/internship/tree/master/task7-monitoring/roles/zabbix)
+
+![image info](./z_hosts.png)
+
+2. MySQL DB Dashboard
+
+![image info](./z_dash.png)
+
+3. ICMP check
+
+![image info](./z_icmp.png)
