@@ -1,0 +1,71 @@
+---
+- name: "Ubuntu - Install docker"
+  hosts: docker
+  become: yes
+  tasks:
+
+  - name: Ensure a list of yum packages are installed
+    ansible.builtin.apt:
+      name: "{{ item }}"
+      state: latest
+      update_cache: yes
+    loop:
+      - apt-transport-https
+      - ca-certificates
+      - software-properties-common
+      - curl
+      - gnupg
+      - lsb-release
+      - git
+
+  - name: Add docker repo apt key
+    ansible.builtin.apt_key:
+      url: "https://download.docker.com/linux/ubuntu/gpg"
+      state: present
+
+  - name: Add docker repo
+    ansible.builtin.apt_repository:
+      repo: "deb https://download.docker.com/linux/ubuntu focal stable"
+      state: present
+
+  - name: Update apt and install docker
+    apt:
+      name: "{{ item }}"
+      state: latest
+      update_cache: yes
+    loop:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+
+  - name: Enable Docker CE service at startup
+    ansible.builtin.service:
+      name: docker
+      state: started
+      enabled: yes
+
+  - name: Add user to docker group
+    user:
+      name: "{{ item }}"
+      groups: docker
+      append: yes
+    loop:
+      - ashutau
+      - ubuntu
+
+  - name: Restart docker
+    service:
+      name: docker
+      state: restarted
+
+  - name: Install docker-compose
+    get_url:
+      url : https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Linux-x86_64
+      dest: /usr/local/bin/docker-compose
+      mode: 0755
+
+  - name: Create a symbolic link
+    ansible.builtin.file:
+      src: /usr/local/bin/docker-compose
+      dest: /usr/bin/docker-compose
+      state: link

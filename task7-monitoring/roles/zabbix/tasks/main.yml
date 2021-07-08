@@ -1,0 +1,37 @@
+---
+- name: Create directories
+  file:
+    path: "/opt/{{ item }}"
+    state: directory
+    recurse: yes
+    mode: 0755
+  with_items:
+    - zabbix
+
+#- name: Copy conf files
+#  copy:
+#    src: "{{ item }}"
+#    dest: /opt/postgres/conf
+#  with_items:
+#    - pg_hba.conf
+#    - postgresql.conf
+
+#- name: Copy data source files
+#  copy:
+#    src: "{{ item.src }}"
+#    dest: "{{ item.dest }}"
+#  with_items:
+#    - {src: 'Result.csv',dest: '/opt/postgres/data_source/Result.csv'}
+#    - {src: 'Students.csv',dest: '/opt/postgres/data_source/Students.csv'}
+#    - {src: 'init-db.sh',dest: '/opt/postgres'}
+
+- name: Copy templates
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: 0777
+  with_items:
+    - {src: 'docker-compose.yml.j2',dest: '/opt/zabbix/docker-compose.yml'}
+
+- name: Docker compose start
+  command: /usr/local/bin/docker-compose -f /opt/zabbix/docker-compose.yml up -d

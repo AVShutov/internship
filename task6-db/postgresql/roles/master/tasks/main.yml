@@ -30,10 +30,6 @@
     - {src: 'Students.csv',dest: '/opt/postgres/data_source/Students.csv'}
     - {src: 'init-db.sh',dest: '/opt/postgres'}
 
-#    - Result.csv
-#    - Students.csv
-#    - init-db.sh
-
 - name: Copy templates
   template:
     src: "{{ item.src }}"
@@ -45,4 +41,3 @@
 
 - name: Docker compose start
   command: /usr/local/bin/docker-compose -f /opt/postgres/docker-compose.yml up -d
-#  remote_user: ec2-user
