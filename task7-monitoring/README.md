@@ -35,7 +35,7 @@ CONTAINER ID   IMAGE                                              COMMAND       
 
 ### ELK
 
-1. ELK deployed by docker compose with FILEBEAT which sends own ELK docker logs to ...ELK )
+1. ELK deployed by docker compose with FILEBEAT (https://github.com/AVShutov/internship/tree/master/task7-monitoring/ELK) which sends his own ELK docker logs to ...ELK )
 
 ![image info](./e_logs.png)
 
